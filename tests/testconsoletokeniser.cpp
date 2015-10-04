@@ -8,8 +8,8 @@ int	main()
 {
 	std::unique_ptr<ITokeniser>	tmp = make_unique<ConsoleTokeniser>();
 	assert(tmp && "ERROR CREATING TOKENISER");
-	std::string	data("1 + (3-5)*-2 / -1\n");
-	std::vector<std::string>	test{"1", "+", "(", "3", "-", "5", ")", "*", "-2", "/", "-1"};
+	std::string	data("1 2 - \t8 *7/3\n");
+	std::vector<std::string>	test{"1", "2", "-", "8", "*", "7", "/", "3"};
 	for (auto it = data.rbegin(); it != data.rend(); ++it)
 		std::cin.putback(*it);
 	size_t	i = 0;

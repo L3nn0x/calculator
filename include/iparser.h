@@ -3,14 +3,14 @@
 # define _IPARSER_H_
 
 #include "tokeniser.h"
-#include <queue>
+#include <stack>
 #include <string>
 #include "memory.h"
 
 class	IParser
 {
 	public:
-		virtual std::queue<std::string>	parse(std::unique_ptr<ITokeniser>) = 0;
+		virtual std::stack<std::string>	parse(std::shared_ptr<ITokeniser>) = 0;
 };
 
 #endif /* !_IPARSER_H_ */

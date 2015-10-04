@@ -2,7 +2,7 @@
 #include "memory.h"
 #include <cassert>
 #include <vector>
-#include <queue>
+#include <stack>
 #include "consoleTokeniser.h"
 #include <iostream>
 
@@ -19,8 +19,8 @@ int	main()
 	assert(res.size() == test.size() && "NOT THE RIGHT NUMBER OF TOKENS!");
 	int	i = 0;
 	while (res.size()) {
-		std::cout << "Test " << res.front() << " " << test[i] << std::endl;
-		assert(res.front() == test[i] && "NOT THE GOOD TOKEN!");
+		std::cout << "Test " << res.top() << " " << test[i] << std::endl;
+		assert(res.top() == test[i] && "NOT THE GOOD TOKEN!");
 		++i;
 		res.pop();
 	}

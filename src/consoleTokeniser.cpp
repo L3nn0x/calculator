@@ -1,37 +1,37 @@
 #include "consoleTokeniser.h"
 #include <iostream>
-#include <cctype>
-
-static const char	grammar[] = {'+', '-', '*', '/', '(', ')'};
-
-static bool	isGrammar(const char c)
-{
-	for (size_t i = 0; i < sizeof(grammar) / sizeof(grammar[0]); ++i)
-		if (c == grammar[i])
-			return true;
-	return false;
-}
+#include "grammar.h"
 
 std::string	ConsoleTokeniser::getNextToken(void)
 {
+	if (_isEndFile && _line == "")
+		return "";
 	if (_line == "") {
 		std::getline(std::cin, _line);
-		if (_line == "") {
+		if (!std::cin && _line == "") {
 			_isEndFile = true;
 			return "";
-		}
+		} else if (!std::cin)
+			_isEndFile = true;
 	}
 	std::string	token;
 	if ((_wasOperator && _line[0] == '-' && std::isdigit(_line[1]))
 			|| std::isdigit(_line[0])) {
-		token = std::to_string(std::stoi(_line));
+		size_t	size;
+		token = std::to_string(std::stod(_line, &size));
+		if (token.find('.') != std::string::npos)
+			while (*(token.end() - 1) == '0')
+				token.pop_back();
+		if (*(token.end() - 1) == '.')
+			token.pop_back();
 		_wasOperator = false;
+		_line.erase(0, size);
 	}
-	else if (isGrammar(_line[0])) {
+	else if (Grammar::isGrammar(_line[0])) {
 		token = _line[0];
 		_wasOperator = true;
+		_line.erase(0, token.size());
 	}
-	_line.erase(0, token.size());
 	int	i = 0;
 	while (_line[i] == ' ' || _line[i] == '\t')
 		++i;
