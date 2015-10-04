@@ -15,7 +15,7 @@ class	Grammar
 		template <typename T>
 		static bool	isGrammar(T c)
 		{
-			static const char	grammar[] = {'+', '-', '*', '/'};
+			static const char	grammar[] = {'+', '-', '*', '/', '^'};
 			for (size_t i = 0; i < sizeof(grammar) / sizeof(grammar[0]); ++i)
 				if (c == grammar[i])
 					return true;

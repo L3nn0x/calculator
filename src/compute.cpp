@@ -4,6 +4,7 @@
 #include "grammar.h"
 #include <vector>
 #include "exceptions.h"
+#include <cmath>
 
 Compute::Compute(std::shared_ptr<ITokeniser> in, std::shared_ptr<IOutput> out,
 				std::unique_ptr<IParser> parser) : _isDebug(false), _in(in),
@@ -44,6 +45,9 @@ double	Compute::computeLine()
 					if (op[1] >= -0.0000001f && op[1] <= 0.0000001f)
 						throw ZeroDivisionException();
 					tokens.push(std::to_string(op[0] / op[1]));
+					break;
+				case '^':
+					tokens.push(std::to_string(std::pow(op[0], op[1])));
 					break;
 			}
 			op.clear();
