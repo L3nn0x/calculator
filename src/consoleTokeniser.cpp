@@ -15,8 +15,8 @@ std::string	ConsoleTokeniser::getNextToken(void)
 			_isEndFile = true;
 	}
 	std::string	token;
-	if ((_wasOperator && _line[0] == '-' && std::isdigit(_line[1]))
-			|| std::isdigit(_line[0])) {
+	if ((_wasOperator && Grammar::isDigit(_line))
+			|| Grammar::isDigit(_line)) {
 		size_t	size;
 		token = std::to_string(std::stod(_line, &size));
 		if (token.find('.') != std::string::npos)
@@ -27,7 +27,7 @@ std::string	ConsoleTokeniser::getNextToken(void)
 		_wasOperator = false;
 		_line.erase(0, size);
 	}
-	else if (Grammar::isGrammar(_line[0])) {
+	else if (Grammar::isGrammar(_line)) {
 		token = _line[0];
 		_wasOperator = true;
 		_line.erase(0, token.size());

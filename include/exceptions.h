@@ -31,4 +31,14 @@ class	ZeroDivisionException : public std::exception
 		}
 };
 
+class	NotGrammarException : public std::exception
+{
+	public:
+		virtual const char *what() const throw()
+		{
+			return "Not a grammar operand";
+		}
+};
+
+
 #endif /* !_NODATAEXCEPTION_H_ */

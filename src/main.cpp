@@ -15,13 +15,11 @@ int	main()
 	std::cout << "> ";
 	while (!input->isEndFile()) {
 		try {
-		std::cout << ">> " << std::setprecision(2) << compute.computeLine() << std::endl;
+		std::cout << ">> " << compute.computeLine() << std::endl;
 		} catch (NoDataException &e) {
 			std::cout << "Bye" << std::endl;
 			return 0;
-		} catch (NoOperandException &e) {
-			std::cout << e.what() << std::endl;
-		} catch (ZeroDivisionException &e) {
+		} catch (std::exception &e) {
 			std::cout << e.what() << std::endl;
 		}
 		std::cout << "> ";

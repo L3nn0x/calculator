@@ -28,7 +28,7 @@ double	Compute::computeLine()
 			printState(tokens);
 		std::string	tmp = tokens.top();
 		tokens.pop();
-		if (!Grammar::isDigit(tmp[1]) && Grammar::isGrammar(tmp[0])) {
+		if (!Grammar::isDigit(tmp) && Grammar::isGrammar(tmp)) {
 			if (op.size() < 2)
 				throw NoOperandException();
 			switch (tmp[0]) {
@@ -51,7 +51,7 @@ double	Compute::computeLine()
 					break;
 			}
 			op.clear();
-		} else if (Grammar::isDigit(tmp[0]) || Grammar::isDigit(tmp[1]))
+		} else if (Grammar::isDigit(tmp))
 			op.push_back(std::stod(tmp));
 	}
 	if (!op.size())
