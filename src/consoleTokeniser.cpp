@@ -27,7 +27,7 @@ std::string	ConsoleTokeniser::getNextToken(void)
 		_wasOperator = false;
 		_line.erase(0, size);
 	}
-	else if (Grammar::isGrammar(_line)) {
+	else if (Grammar::isGrammar(_line.substr(0, 1))) {
 		token = _line[0];
 		_wasOperator = true;
 		_line.erase(0, token.size());
