@@ -9,6 +9,7 @@ class	ConsoleTokeniser : public ITokeniser
 {
 	public:
 		virtual std::string	getNextToken(void);
+		virtual void		clear(void);
 		virtual bool		isEndLine(void) const;
 		virtual bool		isEndFile(void) const;
 

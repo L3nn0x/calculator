@@ -9,6 +9,7 @@ std::string	ConsoleTokeniser::getNextToken(void)
 	if (_line == "") {
 		std::getline(std::cin, _line);
 		if (!std::cin && _line == "") {
+			_isEndLine = true;
 			_isEndFile = true;
 			return "";
 		} else if (!std::cin)
@@ -31,7 +32,11 @@ std::string	ConsoleTokeniser::getNextToken(void)
 		token = _line[0];
 		_wasOperator = true;
 		_line.erase(0, token.size());
+	} else {
+		token = _line.substr(0, _line.find_first_of(" \t"));
+		_line.erase(0, token.size());
 	}
+
 	int	i = 0;
 	while (_line[i] == ' ' || _line[i] == '\t')
 		++i;
@@ -42,6 +47,13 @@ std::string	ConsoleTokeniser::getNextToken(void)
 	else
 		_isEndLine = false;
 	return token;
+}
+
+void		ConsoleTokeniser::clear(void)
+{
+	_line = "";
+	_isEndLine = false;
+	_isEndFile = false;
 }
 
 bool		ConsoleTokeniser::isEndLine(void) const

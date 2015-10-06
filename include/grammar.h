@@ -22,7 +22,7 @@ class	Grammar
 		{
 			std::string	tmp(c);
 			tmp.erase(std::remove_if(tmp.begin(), tmp.end(), [](char x) { return x == ' ' || x == '\t';}), tmp.end());
-			return Grammar::grammar.find(tmp) != Grammar::grammar.end();
+			return Grammar::grammar.find(tmp) != Grammar::grammar.end() || c == "(" || c == ")";
 		}
 
 		static inline bool	isLeft(std::string const &c)
