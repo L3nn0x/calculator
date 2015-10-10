@@ -7,7 +7,7 @@
 class	NPI : public IParser
 {
 	public:
-		virtual std::stack<std::string>	parse(std::shared_ptr<ITokeniser>);
+		virtual std::queue<std::string>	parse(std::shared_ptr<ITokeniser>);
 };
 
 #endif /* !_NPI_H_ */

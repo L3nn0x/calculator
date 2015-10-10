@@ -2,6 +2,7 @@
 #include "consoleOutput.h"
 #include "consoleTokeniser.h"
 #include "npi.h"
+#include "shutingyard.h"
 #include "memory.h"
 #include <iostream>
 #include "exceptions.h"
@@ -11,7 +12,7 @@ int	main()
 {
 	auto	input = std::make_shared<ConsoleTokeniser>();
 	auto	output = std::make_shared<ConsoleOutput>();
-	Compute	compute(input, output, make_unique<NPI>());
+	Compute	compute(input, output, make_unique<ShutingYard>());
 	std::cout << "> ";
 	while (!input->isEndFile()) {
 		try {

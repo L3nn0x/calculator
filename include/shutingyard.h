@@ -7,7 +7,7 @@
 class	ShutingYard : public IParser
 {
 	public:
-		virtual std::stack<std::string>	parse(std::shared_ptr<ITokeniser>);
+		virtual std::queue<std::string>	parse(std::shared_ptr<ITokeniser>);
 };
 
 #endif /* !_SHUTINGYARD_H_ */

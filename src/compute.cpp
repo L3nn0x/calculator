@@ -1,10 +1,7 @@
 #include "compute.h"
 #include <string>
-#include <stack>
 #include "grammar.h"
-#include <vector>
 #include "exceptions.h"
-#include <cmath>
 
 Compute::Compute(std::shared_ptr<ITokeniser> in, std::shared_ptr<IOutput> out,
 				std::unique_ptr<IParser> parser) : _isDebug(false), _in(in),
@@ -19,51 +16,43 @@ void	Compute::setDebug(void)
 
 double	Compute::computeLine()
 {
-	std::stack<std::string>	tokens = _parser->parse(_in);
-	std::vector<double>	op;
+	std::queue<std::string>	tokens = _parser->parse(_in);
+	std::stack<double>	numbers;
 	if (!tokens.size())
 		throw NoDataException();
 	while (tokens.size()) {
 		if (_isDebug)
-			printState(tokens);
-		std::string	tmp = tokens.top();
+			printState(tokens, numbers);
+		std::string	tmp = tokens.front();
 		tokens.pop();
 		if (!Grammar::isDigit(tmp) && Grammar::isGrammar(tmp)) {
-			if (op.size() < 2)
+			if (numbers.size() < 2)
 				throw NoOperandException();
-			switch (tmp[0]) {
-				case '+':
-					tokens.push(std::to_string(op[0] + op[1]));
-					break;
-				case '-':
-					tokens.push(std::to_string(op[0] - op[1]));
-					break;
-				case '*':
-					tokens.push(std::to_string(op[0] * op[1]));
-					break;
-				case '/':
-					if (op[1] >= -0.0000001f && op[1] <= 0.0000001f)
-						throw ZeroDivisionException();
-					tokens.push(std::to_string(op[0] / op[1]));
-					break;
-				case '^':
-					tokens.push(std::to_string(std::pow(op[0], op[1])));
-					break;
-			}
-			op.clear();
+			if (tmp == "/" && numbers.top() >= -0.0000001f && numbers.top() <= 0.0000001f)
+				throw ZeroDivisionException();
+			double	op = numbers.top();
+			numbers.pop();
+			double	res = Grammar::getOp(tmp, numbers.top(), op);
+			numbers.pop();
+			numbers.push(res);
 		} else if (Grammar::isDigit(tmp))
-			op.push_back(std::stod(tmp));
+			numbers.push(std::stod(tmp));
 	}
-	if (!op.size())
+	if (!numbers.size())
 		throw NoDataException();
-	return op[0];
+	return numbers.top();
 }
 
-void	Compute::printState(std::stack<std::string> tokens)
+void	Compute::printState(std::queue<std::string> tokens, std::stack<double> numbers)
 {
 	_out->print("Current state :");
 	while (tokens.size()) {
-		_out->print(tokens.top());
+		_out->print(tokens.front());
 		tokens.pop();
+	}
+	_out->print("Current stack : ");
+	while (numbers.size()) {
+		_out->print(std::to_string(numbers.top()));
+		numbers.pop();
 	}
 }

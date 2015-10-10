@@ -6,6 +6,7 @@
 #include "ioutput.h"
 #include "iparser.h"
 #include "memory.h"
+#include <stack>
 
 class	Compute
 {
@@ -18,7 +19,7 @@ class	Compute
 		void	setDebug(void);
 
 	private:
-		void						printState(std::stack<std::string>);
+		void						printState(std::queue<std::string>, std::stack<double>);
 		bool						_isDebug;
 		std::shared_ptr<ITokeniser>	_in;
 		std::shared_ptr<IOutput>	_out;

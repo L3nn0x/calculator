@@ -3,10 +3,9 @@
 #include "exceptions.h"
 #include "grammar.h"
 
-std::stack<std::string>	NPI::parse(std::shared_ptr<ITokeniser> tok)
+std::queue<std::string>	NPI::parse(std::shared_ptr<ITokeniser> tok)
 {
-	std::stack<std::string>	result;
-	std::vector<std::string>	tmp;
+	std::queue<std::string>	result;
 	do
 	{
 		std::string	blob = tok->getNextToken();
@@ -14,9 +13,7 @@ std::stack<std::string>	NPI::parse(std::shared_ptr<ITokeniser> tok)
 			tok->clear();
 			throw NotGrammarException();
 		}
-		tmp.push_back(blob);
+		result.push(blob);
 	} while (!tok->isEndLine());
-	for (auto it = tmp.rbegin(); it != tmp.rend(); ++it)
-		result.push(*it);
 	return result;
 }
