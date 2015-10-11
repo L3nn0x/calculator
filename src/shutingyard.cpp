@@ -17,7 +17,7 @@ std::queue<std::string>	ShutingYard::parse(std::shared_ptr<ITokeniser> tok)
 			F.push(token);
 		else if (Grammar::isGrammar(token)) {
 			while (P.size()
-					&& ((Grammar::isLeft(token) && islower(token, P.top()))
+					&& P.top() != "(" && ((Grammar::isLeft(token) && islower(token, P.top()))
 						|| (!Grammar::isLeft(token) && isstrictlower(token, P.top())))) {
 				F.push(P.top());
 				P.pop();
