@@ -1,64 +1,38 @@
 #include "consoleTokeniser.h"
 #include <iostream>
-#include "grammar.h"
+#include "stringTokenizer.h"
 
 std::string	ConsoleTokeniser::getNextToken(void)
 {
-	if (_isEndFile && _line == "")
+	std::string	_line;
+	if (_isEndFile && (!_stringParser || _stringParser->isEndLine())) {
+		_stringParser = nullptr;
 		return "";
-	if (_line == "") {
+	}
+	if (!_stringParser || _stringParser->isEndLine()) {
 		std::getline(std::cin, _line);
 		if (!std::cin && _line == "") {
-			_isEndLine = true;
 			_isEndFile = true;
 			return "";
 		} else if (!std::cin)
 			_isEndFile = true;
 	}
-	std::string	token;
-	if ((_wasOperator && Grammar::isDigit(_line))
-			|| Grammar::isDigit(_line)) {
-		size_t	size;
-		token = std::to_string(std::stod(_line, &size));
-		if (token.find('.') != std::string::npos)
-			while (*(token.end() - 1) == '0')
-				token.pop_back();
-		if (*(token.end() - 1) == '.')
-			token.pop_back();
-		_wasOperator = false;
-		_line.erase(0, size);
-	}
-	else if (Grammar::isGrammar(_line.substr(0, 1)) || Grammar::isParenthesis(_line.substr(0, 1))) {
-		token = _line[0];
-		_wasOperator = true;
-		_line.erase(0, token.size());
-	} else {
-		token = _line.substr(0, _line.find_first_of(" \t"));
-		_line.erase(0, token.size());
-	}
-
-	int	i = 0;
-	while (_line[i] == ' ' || _line[i] == '\t')
-		++i;
-	if (i)
-		_line.erase(0, i);
-	if (_line == "")
-		_isEndLine = true;
-	else
-		_isEndLine = false;
-	return token;
+	if ((!_stringParser || _stringParser->isEndLine()) && _line != "")
+		_stringParser = make_unique<StringTokenizer>(_line);
+	else if (!_stringParser)
+		return "";
+	return _stringParser->getNextToken();
 }
 
 void		ConsoleTokeniser::clear(void)
 {
-	_line = "";
-	_isEndLine = false;
+	_stringParser = nullptr;
 	_isEndFile = false;
 }
 
 bool		ConsoleTokeniser::isEndLine(void) const
 {
-	return _isEndLine;
+	return !_stringParser || _stringParser->isEndLine();
 }
 
 bool		ConsoleTokeniser::isEndFile(void) const

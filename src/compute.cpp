@@ -2,6 +2,8 @@
 #include <string>
 #include "grammar.h"
 #include "exceptions.h"
+#include "stringTokenizer.h"
+#include "memory.h"
 
 Compute::Compute(std::shared_ptr<ITokeniser> in, std::shared_ptr<IOutput> out,
 				std::unique_ptr<IParser> parser) : _isDebug(false), _in(in),
@@ -14,9 +16,10 @@ void	Compute::setDebug(void)
 	_isDebug = true;
 }
 
-double	Compute::computeLine()
+double	Compute::computeLine(std::string line)
 {
-	std::queue<std::string>	tokens = _parser->parse(_in);
+	std::queue<std::string>	tokens = _parser->parse(line == "" ?
+									_in : make_unique<StringTokenizer>(line));
 	std::stack<double>	numbers;
 	if (!tokens.size())
 		throw NoDataException();

@@ -40,5 +40,13 @@ class	NotGrammarException : public std::exception
 		}
 };
 
+class	NoExpressionException : public std::exception
+{
+	public:
+		virtual const char *what() const throw()
+		{
+			return "This variable doesn't exist";
+		}
+};
 
 #endif /* !_NODATAEXCEPTION_H_ */

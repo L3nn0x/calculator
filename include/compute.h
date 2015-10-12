@@ -7,6 +7,7 @@
 #include "iparser.h"
 #include "memory.h"
 #include <stack>
+#include <string>
 
 class	Compute
 {
@@ -14,7 +15,7 @@ class	Compute
 		Compute(std::shared_ptr<ITokeniser>, std::shared_ptr<IOutput>,
 				std::unique_ptr<IParser>);
 
-		double	computeLine(void);
+		double	computeLine(std::string line = "");
 
 		void	setDebug(void);
 

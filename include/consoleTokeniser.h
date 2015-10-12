@@ -4,6 +4,8 @@
 
 #include "tokeniser.h"
 #include <string>
+#include "memory.h"
+#include "stringTokenizer.h"
 
 class	ConsoleTokeniser : public ITokeniser
 {
@@ -14,10 +16,9 @@ class	ConsoleTokeniser : public ITokeniser
 		virtual bool		isEndFile(void) const;
 
 	private:
-		std::string			_line;
-		bool				_isEndLine;
-		bool				_isEndFile;
-		bool				_wasOperator;
+		std::unique_ptr<StringTokenizer>	_stringParser;
+		std::string							_line;
+		bool								_isEndFile;
 };
 
 #endif /* !_CONSOLETOKENISER_H_ */
