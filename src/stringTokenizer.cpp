@@ -2,7 +2,8 @@
 #include "grammar.h"
 
 StringTokenizer::StringTokenizer(std::string const &line) : _line(line),
-														_isEndLine(_line == "")
+														_isEndLine(_line == ""),
+														_wasOperator(false)
 {}
 
 std::string	StringTokenizer::getNextToken(void)
@@ -12,8 +13,7 @@ std::string	StringTokenizer::getNextToken(void)
 		return "";
 	}
 	std::string	token;
-	if ((_wasOperator && Grammar::isDigit(_line))
-			|| Grammar::isDigit(_line)) {
+	if (_wasOperator && Grammar::isDigit(_line)) {
 		size_t	size;
 		token = std::to_string(std::stod(_line, &size));
 		if (token.find('.') != std::string::npos)
@@ -29,7 +29,7 @@ std::string	StringTokenizer::getNextToken(void)
 		_wasOperator = true;
 		_line.erase(0, token.size());
 	} else {
-		token = _line.substr(0, _line.find_first_of(" \t"));
+		token = _line.substr(0, _line.find_first_of(Grammar::getGrammar() + " \t"));
 		_line.erase(0, token.size());
 	}
 

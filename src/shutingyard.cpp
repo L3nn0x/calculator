@@ -31,7 +31,8 @@ std::queue<std::string>	ShutingYard::parse(std::shared_ptr<ITokeniser> tok)
 				P.pop();
 			}
 			P.pop();
-		}
+		} else if (token != "")
+			F.push(token);
 	} while (!tok->isEndLine());
 	while (P.size()) {
 		F.push(P.top());

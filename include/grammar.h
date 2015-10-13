@@ -9,6 +9,7 @@
 #include "exceptions.h"
 #include <algorithm>
 #include <functional>
+#include "environment.h"
 
 class	Grammar
 {
@@ -45,16 +46,21 @@ class	Grammar
 			return static_cast<std::map<std::string, std::pair<int, bool>>>(Grammar::grammar)[c].first;
 		}
 
-		static inline double	getOp(std::string const &c, double a, double b)
+		static inline std::string	getOp(std::string const &c, Environment &env, std::string a, std::string b)
 		{
 			if (!Grammar::isGrammar(c))
 				throw NotGrammarException();
-			return static_cast<std::map<std::string, std::function<double(double, double)>>>(Grammar::operations)[c](a, b);
+			return static_cast<std::map<std::string, std::function<std::string(Environment&,std::string, std::string)>>>(Grammar::operations)[c](env, a, b);
+		}
+
+		static inline std::string	getGrammar(void)
+		{
+			return "+-*/^=";
 		}
 
 	private:
 		static const std::map<std::string, std::pair<int, bool>>	grammar;
-		static const std::map<std::string, std::function<double(double, double)>>	operations;
+		static const std::map<std::string, std::function<std::string(Environment&,std::string, std::string)>>	operations;
 };
 
 #endif /* !_GRAMMAR_H_ */

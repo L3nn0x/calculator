@@ -8,6 +8,7 @@
 #include "memory.h"
 #include <stack>
 #include <string>
+#include "environment.h"
 
 class	Compute
 {
@@ -20,11 +21,12 @@ class	Compute
 		void	setDebug(void);
 
 	private:
-		void						printState(std::queue<std::string>, std::stack<double>);
+		void						printState(std::queue<std::string>, std::stack<std::string>);
 		bool						_isDebug;
 		std::shared_ptr<ITokeniser>	_in;
 		std::shared_ptr<IOutput>	_out;
 		std::unique_ptr<IParser>	_parser;
+		Environment					_env;
 };
 
 #endif /* !_COMPUTE_H_ */
