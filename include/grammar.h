@@ -55,7 +55,7 @@ class	Grammar
 
 		static inline std::string	getGrammar(void)
 		{
-			return "+-*/^=()";
+			return "+-*/^=(),";
 		}
 
 	private:

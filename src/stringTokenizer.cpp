@@ -24,7 +24,7 @@ std::string	StringTokenizer::getNextToken(void)
 		_wasOperator = false;
 		_line.erase(0, size);
 	}
-	else if (Grammar::isGrammar(_line.substr(0, 1)) || Grammar::isParenthesis(_line.substr(0, 1))) {
+	else if (Grammar::isGrammar(_line.substr(0, 1)) || Grammar::isParenthesis(_line.substr(0, 1)) || _line[0] == ',') {
 		token = _line[0];
 		_wasOperator = true;
 		_line.erase(0, token.size());
@@ -32,9 +32,6 @@ std::string	StringTokenizer::getNextToken(void)
 		token = _line.substr(0, _line.find_first_of(Grammar::getGrammar() + " \t"));
 		_line.erase(0, token.size());
 	}
-
-	if (token == ",")
-		_wasOperator = true;
 
 	int	i = 0;
 	while (_line[i] == ' ' || _line[i] == '\t')
