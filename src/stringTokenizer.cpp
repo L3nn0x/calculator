@@ -33,6 +33,9 @@ std::string	StringTokenizer::getNextToken(void)
 		_line.erase(0, token.size());
 	}
 
+	if (token == ",")
+		_wasOperator = true;
+
 	int	i = 0;
 	while (_line[i] == ' ' || _line[i] == '\t')
 		++i;

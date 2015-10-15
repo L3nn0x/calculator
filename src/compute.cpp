@@ -17,7 +17,6 @@ void	Compute::setDebug(void)
 {
 	_isDebug = true;
 }
-#include <iostream>
 
 double	Compute::computeLine(std::string line)
 {

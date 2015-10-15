@@ -8,6 +8,8 @@ const std::map<std::string, std::pair<int, bool>>	Grammar::grammar = {
 	{"/", std::make_pair(3, true)},
 	{"^", std::make_pair(4, false)},
 	{"=", std::make_pair(1, false)},
+	{"min", std::make_pair(5, true)},
+	{"max", std::make_pair(5, true)},
 };
 
 using namespace std;
@@ -50,5 +52,15 @@ const map<string, function<string(Environment&, string, string)>>	Grammar::opera
 		{
 			env.assign(a, b);
 			return b;
+		}},
+	{"min", [] (Environment &env, string a, string b) -> string
+		{
+			translate(env, a, b);
+			return stod(a) < stod(b) ? a : b;
+		}},
+	{"max", [] (Environment &env, string a, string b) -> string
+		{
+			translate(env, a, b);
+			return stod(a) > stod(b) ? a : b;
 		}},
 };
