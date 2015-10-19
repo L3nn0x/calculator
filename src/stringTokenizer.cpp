@@ -3,7 +3,7 @@
 
 StringTokenizer::StringTokenizer(std::string const &line) : _line(line),
 														_isEndLine(_line == ""),
-														_wasOperator(false)
+														_wasOperator(true)
 {}
 
 std::string	StringTokenizer::getNextToken(void)

@@ -60,11 +60,11 @@ class	Grammar
 			return static_cast<std::map<std::string, struct Data>>(Grammar::grammar)[c].nbOperators;
 		}
 
-		static inline std::string	getOp(std::string const &c, Environment &env, std::string a, std::string b)
+		static inline std::string	getOp(std::string const &c, Environment &env, std::vector<std::string> args)
 		{
 			if (!Grammar::isGrammar(c))
 				throw NotGrammarException();
-			return static_cast<std::map<std::string, std::function<std::string(Environment&,std::string, std::string)>>>(Grammar::operations)[c](env, a, b);
+			return static_cast<std::map<std::string, std::function<std::string(Environment&,std::vector<std::string>)>>>(Grammar::operations)[c](env, args);
 		}
 
 		static inline std::string	getGrammar(void)
@@ -74,7 +74,7 @@ class	Grammar
 
 	private:
 		static const std::map<std::string, struct Data>	grammar;
-		static const std::map<std::string, std::function<std::string(Environment&,std::string, std::string)>>	operations;
+		static const std::map<std::string, std::function<std::string(Environment&, std::vector<std::string>)>>	operations;
 };
 
 #endif /* !_GRAMMAR_H_ */

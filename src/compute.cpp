@@ -4,6 +4,7 @@
 #include "exceptions.h"
 #include "stringTokenizer.h"
 #include "memory.h"
+#include <algorithm>
 
 #define isZero(x) (std::stod(x) >= -0.0000001f && std::stod(x) <= 0.0000001f)
 
@@ -35,11 +36,13 @@ double	Compute::computeLine(std::string line)
 				throw NoOperandException();
 			if (tmp == "/" && Grammar::isDigit(numbers.top()) && isZero(numbers.top()))
 				throw ZeroDivisionException();
-			std::string	op = numbers.top();
-			numbers.pop();
-			std::string	res = Grammar::getOp(tmp, _env, Grammar::nbOperators(tmp) == 1 ? "" : numbers.top(), op);
-			if (Grammar::nbOperators(tmp) == 2)
+			std::vector<std::string>	args;
+			for (int i = 0; i < Grammar::nbOperators(tmp); ++i) {
+				args.push_back(numbers.top());
 				numbers.pop();
+			}
+			std::reverse(args.begin(), args.end());
+			std::string	res = Grammar::getOp(tmp, _env, args);
 			numbers.push(res);
 		} else
 			numbers.push(tmp);

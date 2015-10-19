@@ -8,68 +8,67 @@ const std::map<std::string, struct Data>	Grammar::grammar = {
 	{"/", {3, 2, true}},
 	{"^", {4, 2, false}},
 	{"=", {1, 2, false}},
-	{"min", {5, 2, true}},
-	{"max", {5, 2, true}},
-	{"sqrt", {5, 1, true}},
+	{"min", {1, 2, true}},
+	{"max", {1, 2, true}},
+	{"sqrt", {1, 1, true}},
 };
 
 using namespace std;
 
-static inline void	translate(Environment &env, std::string &a, std::string &b)
+static inline void	translate(Environment &env, std::string &a)
 {
-	if (a != "" && !Grammar::isDigit(a))
+	if (!Grammar::isDigit(a))
 		a = std::to_string(env.evaluate(a));
-	if (b != "" && !Grammar::isDigit(b))
-		b = std::to_string(env.evaluate(b));
 }
 
-const map<string, function<string(Environment&, string, string)>>	Grammar::operations = {
-	{"+", [] (Environment &env, string a, string b) -> string
+const map<string, function<string(Environment&, vector<string>)>>	Grammar::operations = {
+	{"+", [] (Environment &env, vector<string> args) -> string
 		{
-			translate(env, a, b);
-			return to_string(stod(a) + stod(b));
+			for (auto &i : args)
+				translate(env, i);
+			return to_string(stod(args[0]) + stod(args[1]));
 		}},
-	{"-", [] (Environment &env, string a, string b) -> string
+	{"-", [] (Environment &env, vector<string> args) -> string
 		{
-			translate(env, a, b);
-			return to_string(stod(a) - stod(b));
+			for (auto &i : args) translate(env, i);
+			return to_string(stod(args[0]) - stod(args[1]));
 		}},
-	{"*", [] (Environment &env, string a, string b) -> string
+	{"*", [] (Environment &env, vector<string> args) -> string
 		{ 
-			translate(env, a, b);
-			return to_string(stod(a) * stod(b));
+			for (auto &i : args) translate(env, i);
+			return to_string(stod(args[0]) * stod(args[1]));
 		}},
-	{"/", [] (Environment &env, string a, string b) -> string
+	{"/", [] (Environment &env, vector<string> args) -> string
 		{
-			translate(env, a, b);
-			return to_string(stod(a) / stod(b));
+			for (auto &i : args) translate(env, i);
+			return to_string(stod(args[0]) / stod(args[1]));
 		}},
-	{"^", [] (Environment &env, string a, string b) -> string
+	{"^", [] (Environment &env, vector<string> args) -> string
 		{
-			translate(env, a, b);
-			return to_string(pow(stod(a), stod(b)));
+			for (auto &i : args) translate(env, i);
+			return to_string(pow(stod(args[0]), stod(args[1])));
 		}},
-	{"=", [] (Environment &env, string a, string b) -> string
+	{"=", [] (Environment &env, vector<string> args) -> string
 		{
-			if (a == b)
-				env.remove(a);
+			if (args[0] == args[1])
+				env.remove(args[0]);
 			else
-				env.assign(a, b);
-			return b;
+				env.assign(args[0], args[1]);
+			return args[1];
 		}},
-	{"min", [] (Environment &env, string a, string b) -> string
+	{"min", [] (Environment &env, vector<string> args) -> string
 		{
-			translate(env, a, b);
-			return stod(a) < stod(b) ? a : b;
+			for (auto &i : args) translate(env, i);
+			return stod(args[0]) < stod(args[1]) ? args[0] : args[1];
 		}},
-	{"max", [] (Environment &env, string a, string b) -> string
+	{"max", [] (Environment &env, vector<string> args) -> string
 		{
-			translate(env, a, b);
-			return stod(a) > stod(b) ? a : b;
+			for (auto &i : args) translate(env, i);
+			return stod(args[0]) > stod(args[1]) ? args[0] : args[1];
 		}},
-	{"sqrt", [] (Environment &env, string a, string b) -> string
+	{"sqrt", [] (Environment &env, vector<string> args) -> string
 		{
-			translate(env, a, b);
-			return to_string(sqrt(stod(b)));
+			for (auto &i : args) translate(env, i);
+			return to_string(sqrt(stod(args[0])));
 		}},
 };
