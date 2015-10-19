@@ -31,14 +31,15 @@ double	Compute::computeLine(std::string line)
 		std::string	tmp = tokens.front();
 		tokens.pop();
 		if (!Grammar::isDigit(tmp) && Grammar::isGrammar(tmp)) {
-			if (numbers.size() < 2)
+			if (numbers.size() < (unsigned)Grammar::nbOperators(tmp))
 				throw NoOperandException();
 			if (tmp == "/" && Grammar::isDigit(numbers.top()) && isZero(numbers.top()))
 				throw ZeroDivisionException();
 			std::string	op = numbers.top();
 			numbers.pop();
-			std::string	res = Grammar::getOp(tmp, _env, numbers.top(), op);
-			numbers.pop();
+			std::string	res = Grammar::getOp(tmp, _env, Grammar::nbOperators(tmp) == 1 ? "" : numbers.top(), op);
+			if (Grammar::nbOperators(tmp) == 2)
+				numbers.pop();
 			numbers.push(res);
 		} else
 			numbers.push(tmp);

@@ -11,6 +11,13 @@
 #include <functional>
 #include "environment.h"
 
+struct	Data
+{
+	int		precedence;
+	int		nbOperators;
+	bool	leftAssociative;
+};
+
 class	Grammar
 {
 	public:
@@ -36,14 +43,21 @@ class	Grammar
 		{
 			if (!Grammar::isGrammar(c))
 				throw NotGrammarException();
-			return static_cast<std::map<std::string, std::pair<int, bool>>>(Grammar::grammar)[c].second;
+			return static_cast<std::map<std::string, struct Data>>(Grammar::grammar)[c].leftAssociative;
 		}
 
 		static inline int	priority(std::string const &c)
 		{
 			if (!Grammar::isGrammar(c))
 				throw NotGrammarException();
-			return static_cast<std::map<std::string, std::pair<int, bool>>>(Grammar::grammar)[c].first;
+			return static_cast<std::map<std::string, struct Data>>(Grammar::grammar)[c].precedence;
+		}
+
+		static inline int	nbOperators(std::string const &c)
+		{
+			if (!Grammar::isGrammar(c))
+				throw NotGrammarException();
+			return static_cast<std::map<std::string, struct Data>>(Grammar::grammar)[c].nbOperators;
 		}
 
 		static inline std::string	getOp(std::string const &c, Environment &env, std::string a, std::string b)
@@ -59,7 +73,7 @@ class	Grammar
 		}
 
 	private:
-		static const std::map<std::string, std::pair<int, bool>>	grammar;
+		static const std::map<std::string, struct Data>	grammar;
 		static const std::map<std::string, std::function<std::string(Environment&,std::string, std::string)>>	operations;
 };
 

@@ -1,24 +1,25 @@
 #include "grammar.h"
 #include <cmath>
 
-const std::map<std::string, std::pair<int, bool>>	Grammar::grammar = {
-	{"+", std::make_pair(2, true)},
-	{"-", std::make_pair(2, true)},
-	{"*", std::make_pair(3, true)},
-	{"/", std::make_pair(3, true)},
-	{"^", std::make_pair(4, false)},
-	{"=", std::make_pair(1, false)},
-	{"min", std::make_pair(5, true)},
-	{"max", std::make_pair(5, true)},
+const std::map<std::string, struct Data>	Grammar::grammar = {
+	{"+", {2, 2, true}},
+	{"-", {2, 2, true}},
+	{"*", {3, 2, true}},
+	{"/", {3, 2, true}},
+	{"^", {4, 2, false}},
+	{"=", {1, 2, false}},
+	{"min", {5, 2, true}},
+	{"max", {5, 2, true}},
+	{"sqrt", {5, 1, true}},
 };
 
 using namespace std;
 
 static inline void	translate(Environment &env, std::string &a, std::string &b)
 {
-	if (!Grammar::isDigit(a))
+	if (a != "" && !Grammar::isDigit(a))
 		a = std::to_string(env.evaluate(a));
-	if (!Grammar::isDigit(b))
+	if (b != "" && !Grammar::isDigit(b))
 		b = std::to_string(env.evaluate(b));
 }
 
@@ -65,5 +66,10 @@ const map<string, function<string(Environment&, string, string)>>	Grammar::opera
 		{
 			translate(env, a, b);
 			return stod(a) > stod(b) ? a : b;
+		}},
+	{"sqrt", [] (Environment &env, string a, string b) -> string
+		{
+			translate(env, a, b);
+			return to_string(sqrt(stod(b)));
 		}},
 };
