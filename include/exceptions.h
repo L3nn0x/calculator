@@ -13,6 +13,15 @@ class	NoDataException : public std::exception
 		}
 };
 
+class	NoCalculationException : public std::exception
+{
+	public:
+		virtual const char	*what() const throw()
+		{
+			return "";
+		}
+};
+
 class	NoOperandException : public std::exception
 {
 	public:

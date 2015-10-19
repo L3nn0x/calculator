@@ -7,13 +7,14 @@
 #include <iostream>
 #include "exceptions.h"
 #include <iomanip>
+#include <cstring>
 
 int	main()
 {
 	auto	input = std::make_shared<ConsoleTokeniser>();
 	auto	output = std::make_shared<ConsoleOutput>();
 	Compute	compute(input, output, make_unique<ShutingYard>());
-	compute.setDebug();
+	/* compute.setDebug(); */
 	std::cout << "> ";
 	while (!input->isEndFile()) {
 		try {
@@ -22,7 +23,8 @@ int	main()
 			std::cout << "Bye" << std::endl;
 			return 0;
 		} catch (std::exception &e) {
-			std::cout << e.what() << std::endl;
+			if (strcmp(const_cast<char*>(e.what()), ""))
+				std::cout << e.what() << std::endl;
 		}
 		std::cout << "> ";
 	}

@@ -50,9 +50,10 @@ const map<string, function<string(Environment&, vector<string>)>>	Grammar::opera
 		}},
 	{"=", [] (Environment &env, vector<string> args) -> string
 		{
-			if (args[0] == args[1])
+			if (args[0] == args[1]) {
 				env.remove(args[0]);
-			else
+				return "";
+			} else
 				env.assign(args[0], args[1]);
 			return args[1];
 		}},

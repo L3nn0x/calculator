@@ -25,7 +25,7 @@ double	Compute::computeLine(std::string line)
 									_in : make_unique<StringTokenizer>(line));
 	std::stack<std::string>	numbers;
 	if (!tokens.size())
-	throw NoDataException();
+		throw NoDataException();
 	while (tokens.size()) {
 		if (_isDebug)
 			printState(tokens, numbers);
@@ -43,12 +43,13 @@ double	Compute::computeLine(std::string line)
 			}
 			std::reverse(args.begin(), args.end());
 			std::string	res = Grammar::getOp(tmp, _env, args);
-			numbers.push(res);
+			if (res != "")
+				numbers.push(res);
 		} else
 			numbers.push(tmp);
 	}
 	if (!numbers.size())
-		throw NoDataException();
+		throw NoCalculationException();
 	if (!Grammar::isDigit(numbers.top()))
 		return _env.evaluate(numbers.top());
 	return std::stod(numbers.top());
