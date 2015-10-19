@@ -8,9 +8,9 @@ const std::map<std::string, struct Data>	Grammar::grammar = {
 	{"/", {3, 2, true}},
 	{"^", {4, 2, false}},
 	{"=", {1, 2, false}},
-	{"min", {1, 2, true}},
-	{"max", {1, 2, true}},
-	{"sqrt", {1, 1, true}},
+	{"min", {6, 2, false}},
+	{"max", {6, 2, false}},
+	{"sqrt", {6, 1, false}},
 };
 
 using namespace std;
@@ -72,3 +72,66 @@ const map<string, function<string(Environment&, vector<string>)>>	Grammar::opera
 			return to_string(sqrt(stod(args[0])));
 		}},
 };
+
+
+bool	Grammar::isDigit(std::string const &c)
+{
+	return std::isdigit(c[0]) || (c[0] == '-' && std::isdigit(c[1]));
+}
+
+bool	Grammar::isGrammar(std::string const &c)
+{
+	std::string	tmp(c);
+	tmp.erase(std::remove_if(tmp.begin(), tmp.end(), [](char x) { return x == ' ' || x == '\t';}), tmp.end());
+	return Grammar::grammar.find(tmp) != Grammar::grammar.end();
+}
+
+bool	Grammar::isFunction(std::string const &c)
+{
+	std::string	tmp(c);
+	tmp.erase(std::remove_if(tmp.begin(), tmp.end(), [] (char x) { return x == ' ' || x == '\t';}), tmp.end());
+	if (tmp == "" || Grammar::isDigit(tmp) || tmp.find_first_of(Grammar::getGrammar()) != std::string::npos)
+		return false;
+	return true;
+}
+
+bool	Grammar::isParenthesis(std::string const &c)
+{
+	return c == "(" || c == ")";
+}
+
+bool	Grammar::isLeft(std::string const &c)
+{
+	if (!Grammar::isGrammar(c))
+		/* throw NotGrammarException(); */
+		return false;
+	return static_cast<std::map<std::string, struct Data>>(Grammar::grammar)[c].leftAssociative;
+}
+
+int	Grammar::priority(std::string const &c)
+{
+	if (!Grammar::isGrammar(c))
+		/* throw NotGrammarException(); */
+		return 5;
+	return static_cast<std::map<std::string, struct Data>>(Grammar::grammar)[c].precedence;
+}
+
+int	Grammar::nbOperators(std::string const &c)
+{
+	if (!Grammar::isGrammar(c))
+		throw NotGrammarException();
+	return static_cast<std::map<std::string, struct Data>>(Grammar::grammar)[c].nbOperators;
+}
+
+std::string	Grammar::getOp(std::string const &c, Environment &env, std::vector<std::string> args)
+{
+	if (!Grammar::isGrammar(c))
+		throw NotGrammarException();
+	return static_cast<std::map<std::string, std::function<std::string(Environment&,std::vector<std::string>)>>>(Grammar::operations)[c](env, args);
+}
+
+std::string	Grammar::getGrammar(void)
+{
+	return "+-*/^=(),";
+}
+

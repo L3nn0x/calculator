@@ -21,56 +21,23 @@ struct	Data
 class	Grammar
 {
 	public:
-		static inline bool	isDigit(std::string const &c)
-		{
-			return std::isdigit(c[0]) || (c[0] == '-'
-					&& std::isdigit(c[1]));
-		}
+		static bool	isDigit(std::string const &c);
 
-		static bool	isGrammar(std::string const &c)
-		{
-			std::string	tmp(c);
-			tmp.erase(std::remove_if(tmp.begin(), tmp.end(), [](char x) { return x == ' ' || x == '\t';}), tmp.end());
-			return Grammar::grammar.find(tmp) != Grammar::grammar.end();
-		}
+		static bool	isGrammar(std::string const &c);
 
-		static bool	isParenthesis(std::string const &c)
-		{
-			return c == "(" || c == ")";
-		}
+		static bool	isFunction(std::string const &c);
 
-		static inline bool	isLeft(std::string const &c)
-		{
-			if (!Grammar::isGrammar(c))
-				throw NotGrammarException();
-			return static_cast<std::map<std::string, struct Data>>(Grammar::grammar)[c].leftAssociative;
-		}
+		static bool	isParenthesis(std::string const &c);
 
-		static inline int	priority(std::string const &c)
-		{
-			if (!Grammar::isGrammar(c))
-				throw NotGrammarException();
-			return static_cast<std::map<std::string, struct Data>>(Grammar::grammar)[c].precedence;
-		}
+		static bool	isLeft(std::string const &c);
 
-		static inline int	nbOperators(std::string const &c)
-		{
-			if (!Grammar::isGrammar(c))
-				throw NotGrammarException();
-			return static_cast<std::map<std::string, struct Data>>(Grammar::grammar)[c].nbOperators;
-		}
+		static int	priority(std::string const &c);
 
-		static inline std::string	getOp(std::string const &c, Environment &env, std::vector<std::string> args)
-		{
-			if (!Grammar::isGrammar(c))
-				throw NotGrammarException();
-			return static_cast<std::map<std::string, std::function<std::string(Environment&,std::vector<std::string>)>>>(Grammar::operations)[c](env, args);
-		}
+		static int	nbOperators(std::string const &c);
 
-		static inline std::string	getGrammar(void)
-		{
-			return "+-*/^=(),";
-		}
+		static std::string	getOp(std::string const &c, Environment &env, std::vector<std::string> args);
+
+		static std::string	getGrammar(void);
 
 	private:
 		static const std::map<std::string, struct Data>	grammar;

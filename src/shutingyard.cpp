@@ -15,6 +15,8 @@ std::queue<std::string>	ShutingYard::parse(std::shared_ptr<ITokeniser> tok)
 		auto	token = tok->getNextToken();
 		if (Grammar::isDigit(token))
 			F.push(token);
+		else if (Grammar::isFunction(token))
+			P.push(token);
 		else if (token == ",") {
 			while (P.size() && P.top() != "(") {
 				F.push(P.top());
@@ -29,7 +31,7 @@ std::queue<std::string>	ShutingYard::parse(std::shared_ptr<ITokeniser> tok)
 			}
 			P.push(token);
 		} else if (token == "(") {
-			if (F.size() && !Grammar::isGrammar(F.front()) && !Grammar::isDigit(F.front())) {
+			if (F.size() && Grammar::isFunction(F.front())) {
 				P.push(F.front());
 				F.pop();
 			}

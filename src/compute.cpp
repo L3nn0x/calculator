@@ -56,6 +56,7 @@ double	Compute::computeLine(std::string line)
 
 void	Compute::printState(std::queue<std::string> tokens, std::stack<std::string> numbers)
 {
+	_out->print("-------New state--------");
 	_out->print("Current queue :");
 	while (tokens.size()) {
 		_out->print(tokens.front());
