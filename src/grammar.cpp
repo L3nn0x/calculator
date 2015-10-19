@@ -50,7 +50,10 @@ const map<string, function<string(Environment&, string, string)>>	Grammar::opera
 		}},
 	{"=", [] (Environment &env, string a, string b) -> string
 		{
-			env.assign(a, b);
+			if (a == b)
+				env.remove(a);
+			else
+				env.assign(a, b);
 			return b;
 		}},
 	{"min", [] (Environment &env, string a, string b) -> string

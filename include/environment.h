@@ -14,6 +14,7 @@ class	Environment
 		Environment(Compute *callback) : _callback(callback) { assert(_callback && "Callback can't be null"); }
 
 		void	assign(std::string const &var, std::string const &exp);
+		void	remove(std::string const &var);
 
 		double	evaluate(std::string const &var);
 

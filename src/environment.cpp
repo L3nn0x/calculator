@@ -13,3 +13,11 @@ double	Environment::evaluate(std::string const &var)
 		throw NoExpressionException();
 	return _callback->computeLine(_expressions[var]);
 }
+
+void	Environment::remove(std::string const &var)
+{
+	auto	it = _expressions.find(var);
+	if (it == _expressions.end())
+		throw NoExpressionException();
+	_expressions.erase(it);
+}
