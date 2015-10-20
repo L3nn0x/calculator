@@ -24,17 +24,13 @@ std::queue<std::string>	ShutingYard::parse(std::shared_ptr<ITokeniser> tok)
 			}
 		} else if (Grammar::isGrammar(token)) {
 			while (P.size()
-					&& P.top() != "(" && ((Grammar::isLeft(token) && islower(token, P.top()))
-						|| (!Grammar::isLeft(token) && isstrictlower(token, P.top())))) {
+					&& P.top() != "(" && (Grammar::isFunction(P.top()) || ((Grammar::isLeft(token) && islower(token, P.top()))
+						|| (!Grammar::isLeft(token) && isstrictlower(token, P.top()))))) {
 				F.push(P.top());
 				P.pop();
 			}
 			P.push(token);
 		} else if (token == "(") {
-			if (F.size() && Grammar::isFunction(F.front())) {
-				P.push(F.front());
-				F.pop();
-			}
 			P.push(token);
 		} else if (token == ")") {
 			while (P.top() != "(") {
@@ -42,8 +38,7 @@ std::queue<std::string>	ShutingYard::parse(std::shared_ptr<ITokeniser> tok)
 				P.pop();
 			}
 			P.pop();
-		} else if (token != "")
-			F.push(token);
+		}
 	} while (!tok->isEndLine());
 	while (P.size()) {
 		F.push(P.top());
