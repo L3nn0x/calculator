@@ -14,7 +14,6 @@ int	main()
 	auto	input = std::make_shared<ConsoleTokeniser>();
 	auto	output = std::make_shared<ConsoleOutput>();
 	Compute	compute(input, output, make_unique<ShutingYard>());
-	compute.setDebug();
 	std::cout << "> ";
 	while (!input->isEndFile()) {
 		try {

@@ -2,6 +2,12 @@
 #include "exceptions.h"
 #include "compute.h"
 
+Environment::Environment(Compute *callback) : _callback(callback)
+{
+	assert(_callback && "Callback can't be null");
+	_expressions["PI"] = "3.141592653589793";
+}
+
 void	Environment::assign(std::string const &var, std::string const &exp)
 {
 	_expressions[var] = exp;

@@ -11,7 +11,7 @@ class	Compute;
 class	Environment
 {
 	public:
-		Environment(Compute *callback) : _callback(callback) { assert(_callback && "Callback can't be null"); }
+		Environment(Compute *callback);
 
 		void	assign(std::string const &var, std::string const &exp);
 		void	remove(std::string const &var);

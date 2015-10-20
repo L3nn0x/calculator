@@ -11,6 +11,9 @@ const std::map<std::string, struct Data>	Grammar::grammar = {
 	{"min", {6, 2, false}},
 	{"max", {6, 2, false}},
 	{"sqrt", {6, 1, false}},
+	{"cos", {6, 1, false}},
+	{"sin", {6, 1, false}},
+	{"tan", {6, 1, false}},
 };
 
 using namespace std;
@@ -72,8 +75,22 @@ const map<string, function<string(Environment&, vector<string>)>>	Grammar::opera
 			for (auto &i : args) translate(env, i);
 			return to_string(sqrt(stod(args[0])));
 		}},
+	{"cos", [] (Environment &env, vector<string> args) -> string
+		{
+			for (auto &i : args) translate(env, i);
+			return to_string(cos(stod(args[0])));
+		}},
+	{"sin", [] (Environment &env, vector<string> args) -> string
+		{
+			for (auto &i : args) translate(env, i);
+			return to_string(sin(stod(args[0])));
+		}},
+	{"tan", [] (Environment &env, vector<string> args) -> string
+		{
+			for (auto &i : args) translate(env, i);
+			return to_string(tan(stod(args[0])));
+		}},
 };
-
 
 bool	Grammar::isDigit(std::string const &c)
 {
