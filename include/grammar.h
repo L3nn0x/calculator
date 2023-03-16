@@ -9,6 +9,7 @@
 #include "exceptions.h"
 #include <algorithm>
 #include <functional>
+#include <vector>
 #include "environment.h"
 
 struct	Data
